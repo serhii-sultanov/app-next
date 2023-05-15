@@ -1,10 +1,11 @@
-import { UserCard } from '../components/UserCard';
 import Link from 'next/link';
 import { UserData } from '../../types';
 import { GetServerSideProps } from 'next';
-import { PaginationBar } from '@/components/PaginationBar';
 import { getUsersPerPage } from '@/api';
+import { PaginationBar } from '@/components/PaginationBar';
 import { SearchBar } from '@/components/SearchBar';
+import { UserCard } from '@/components/UserCard';
+
 
 type UserProps = {
   users: UserData[];
