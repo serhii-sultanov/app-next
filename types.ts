@@ -12,8 +12,3 @@ export type UserData = {
   image: string;
   address?: AddressData;
 };
-
-// coordinates: {
-//   lat: number;
-//   lng: number;
-// };
