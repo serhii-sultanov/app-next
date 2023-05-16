@@ -10,13 +10,13 @@ export const SearchBar = () => {
   const [value, setValue] = useState('');
   const [users, setUsers] = useState<UserData[]>([]);
 
-  const fetchUsers = async () => {
-    const fetchedUsers = await getAllUsers();
-    setUsers(fetchedUsers);
+  const getUsers = async () => {
+    const gettedUsers = await getAllUsers();
+    setUsers(gettedUsers);
   };
 
   useEffect(() => {
-    fetchUsers();
+    getUsers();
   }, []);
 
   const filteredUsers = value
