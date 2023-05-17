@@ -12,3 +12,8 @@ export type UserData = {
   image: string;
   address?: AddressData;
 };
+
+export type UserResponse = {
+  users: UserData[];
+  total?: number;
+};

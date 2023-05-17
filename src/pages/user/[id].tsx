@@ -7,11 +7,11 @@ import { UserInfo } from '@/components/UserInfo';
 
 type UserDataProps = {
   user: UserData;
-  allUsers: UserData[]
+  allUsers: UserData[];
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const allUsers = await getAllUsers()
+  const allUsers = await getAllUsers();
   const { id } = params || {};
   if (!id) {
     return {
@@ -27,7 +27,7 @@ const User = ({ allUsers, user }: UserDataProps) => {
     <div className="min-h-screen">
       <div className="p-12 flex items-center">
         <UserNavigation id={user.id} />
-        <SearchBar allUsers={allUsers}/>
+        <SearchBar allUsers={allUsers} />
       </div>
       <UserInfo data={user} />
     </div>
