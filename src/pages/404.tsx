@@ -13,7 +13,7 @@ const NotFoundPage = () => {
     return () => {
       clearTimeout(timeout);
     };
-  }, [router]);
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
