@@ -6,22 +6,22 @@ type UserResponse = {
   total?: number;
 };
 
-export async function getAllUsers(): Promise<UserData[]> {
+export const getAllUsers =async (): Promise<UserData[]> => {
   const response = await axios.get<UserResponse>('/users');
   const allUsers = response.data.users;
   return allUsers;
 }
 
-export async function getUserById(id: number): Promise<UserData> {
+export const getUserById = async (id: number): Promise<UserData> => {
   const response = await axios.get<UserData>(`/users/${id}`);
   const user: UserData = response.data;
   return user;
 }
 
-export async function getUsersPerPage(
+export const getUsersPerPage = async (
   limit: number,
   skip: number,
-): Promise<UserResponse> {
+): Promise<UserResponse> => {
   const response = await axios.get<UserResponse>(
     `/users?limit=${limit}&skip=${skip}`,
   );
@@ -29,7 +29,7 @@ export async function getUsersPerPage(
   return users;
 }
 
-export async function getUsersByName(name: string): Promise<UserData[]> {
+export const getUsersByName = async (name: string): Promise<UserData[]> => {
   const response = await axios.get(
     `https://dummyjson.com/users/search?q=${name}`,
   );
