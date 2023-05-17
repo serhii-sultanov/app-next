@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { GetServerSideProps } from 'next';
 import { UserData } from '../../types';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -6,21 +7,38 @@ import { getAllUsers } from '@/api';
 import rightarrow from '../assets/icons/rightarrow.svg';
 import search from '../assets/icons/search.svg';
 
-export const SearchBar = () => {
+type SearchBarProps = {
+  allUsers: UserData[];
+}
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  try {
+    const response = await getAllUsers();
+    const  users  = response;
+    return { props: { allusers: users } };
+  } catch (error) {
+    return {
+      notFound: true,
+    };
+  }
+
+}
+
+export const SearchBar = ({allUsers}: SearchBarProps) => {
   const [value, setValue] = useState('');
-  const [users, setUsers] = useState<UserData[]>([]);
+  // const [users, setUsers] = useState<UserData[]>([]);
 
-  const getUsers = async () => {
-    const gettedUsers = await getAllUsers();
-    setUsers(gettedUsers);
-  };
+  // const getUsers = async () => {
+  //   const gettedUsers = await getAllUsers();
+  //   setUsers(gettedUsers);
+  // };
 
-  useEffect(() => {
-    getUsers();
-  }, []);
+  // useEffect(() => {
+  //   getUsers();
+  // }, []);
 
   const filteredUsers = value
-    ? users.filter((user: UserData) => {
+    ? allUsers.filter((user: UserData) => {
         return user.firstName.toLowerCase().includes(value.toLowerCase());
       })
     : [];
