@@ -1,10 +1,6 @@
 import axios from './helpers/axios';
 import { UserData } from '../types';
-
-type UserResponse = {
-  users: UserData[];
-  total?: number;
-};
+import { UserResponse } from '../types';
 
 export const getAllUsers = async (): Promise<UserData[]> => {
   const response = await axios.get<UserResponse>('/users');
@@ -25,13 +21,15 @@ export const getUsersPerPage = async (
   const response = await axios.get<UserResponse>(
     `/users?limit=${limit}&skip=${skip}`,
   );
-  const users = response.data;
-  return users;
+  return response.data;
 };
 
-export const getUsersByName = async (name: string): Promise<UserData[]> => {
-  const response = await axios.get(
-    `https://dummyjson.com/users/search?q=${name}`,
-  );
-  return response.data;
+export const getUserByName = async (name: string): Promise<UserData> => {
+  const response = await axios.get(`https://dummyjson.com/users/search`, {
+    params: {
+      q: name
+    }
+  });
+  const [user] = response.data.users;
+  return user;
 };

@@ -8,11 +8,12 @@ type PaginationBarProps = {
   currentPage: number;
 };
 
+const PAGE_LIMIT = 10;
+
 export const PaginationBar = ({
   totalUsers,
   currentPage,
 }: PaginationBarProps) => {
-  const PAGE_LIMIT = 10;
   const totalPages = Math.ceil(totalUsers / PAGE_LIMIT);
 
   const pageLinks = [];
