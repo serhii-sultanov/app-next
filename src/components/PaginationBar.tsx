@@ -57,7 +57,7 @@ export const PaginationBar = ({
 
   return (
     <div className="flex justify-center items-center space-x-2">
-      {currentPage > 1 && (
+      {currentPage > 1 ? (
         <Link href={`/users?page=${prevPage}`} className="w-12">
           <Image
             className="w-full hover:transform hover:scale-110 transition-all duration-200"
@@ -66,11 +66,11 @@ export const PaginationBar = ({
             alt="Previous Page"
           />
         </Link>
-      )}
+      ) : null}
       <ul className="mx-4">
         <li>{pageLinks}</li>
       </ul>
-      {currentPage < totalPages && (
+      {currentPage < totalPages ? (
         <Link href={`/users?page=${nextPage}`} className="w-12">
           <Image
             className="w-full hover:transform hover:scale-110 transition-all duration-200"
@@ -79,7 +79,7 @@ export const PaginationBar = ({
             alt="Next User"
           />
         </Link>
-      )}
+      ) : null}
     </div>
   );
 };
