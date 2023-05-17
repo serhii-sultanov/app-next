@@ -48,7 +48,7 @@ export const SearchBar = () => {
           className="border border-gray-300 p-4 rounded-lg pl-16 w-full outline-none focus:ring-2 focus:ring-stone-700"
         />
       </div>
-      {filteredUsers.length > 0 && (
+      {filteredUsers ? (
         <ul className="absolute top-12 left-0 w-full border border-gray-300 bg-white z-10">
           {filteredUsers.map((user: UserData) => (
             <li
@@ -71,7 +71,7 @@ export const SearchBar = () => {
             </li>
           ))}
         </ul>
-      )}
+      ) : null}
     </div>
   );
 };
