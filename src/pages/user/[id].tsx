@@ -5,8 +5,6 @@ import { SearchBar } from '@/components/SearchBar';
 import { UserNavigation } from '@/components/UserNavigation';
 import { UserInfo } from '@/components/UserInfo';
 
-
-
 type UserDataProps = {
   user: UserData;
 };

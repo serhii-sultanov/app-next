@@ -5,7 +5,7 @@ import { getUsersPerPage } from '@/api';
 import { PaginationBar } from '@/components/PaginationBar';
 import { SearchBar } from '@/components/SearchBar';
 import { UserCard } from '@/components/UserCard';
-
+import { FC } from 'react';
 
 type UserProps = {
   users: UserData[];
@@ -29,7 +29,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   }
 };
 
-const Users = ({ users, total, currentPage }: UserProps) => {
+const Users: FC<UserProps> = ({ users, total, currentPage }) => {
   return (
     <div className="min-h-screen p-12">
       <SearchBar />
