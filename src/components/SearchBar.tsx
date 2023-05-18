@@ -1,11 +1,10 @@
 import { getUserByName } from '@/api';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { UserData } from '../../types';
 import rightarrow from '../assets/icons/rightarrow.svg';
 import search from '../assets/icons/search.svg';
-import { useCallback } from 'react';
 
 type SearchBarProps = {
   allUsers: UserData[];

@@ -1,9 +1,9 @@
-import { UserData } from '../../../types';
-import { GetServerSideProps } from 'next';
 import { getAllUsers, getUserById } from '@/api';
 import { SearchBar } from '@/components/SearchBar';
-import { UserNavigation } from '@/components/UserNavigation';
 import { UserInfo } from '@/components/UserInfo';
+import { UserNavigation } from '@/components/UserNavigation';
+import { GetServerSideProps } from 'next';
+import { UserData } from '../../../types';
 
 type UserDataProps = {
   user: UserData;

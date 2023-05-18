@@ -1,8 +1,8 @@
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useMemo } from 'react';
 import left from '../assets/icons/left.svg';
 import right from '../assets/icons/right.svg';
-import { useMemo } from 'react';
 
 type PaginationBarProps = {
   totalUsers: number;

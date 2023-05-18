@@ -1,11 +1,11 @@
-import Link from 'next/link';
-import { UserData } from '../../types';
-import { GetServerSideProps } from 'next';
 import { getAllUsers, getUsersPerPage } from '@/api';
 import { PaginationBar } from '@/components/PaginationBar';
 import { SearchBar } from '@/components/SearchBar';
 import { UserCard } from '@/components/UserCard';
+import { GetServerSideProps } from 'next';
+import Link from 'next/link';
 import { FC } from 'react';
+import { UserData } from '../../types';
 
 type UserProps = {
   users: UserData[];

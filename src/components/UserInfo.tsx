@@ -1,5 +1,5 @@
-import { UserData } from '../../types';
 import Image from 'next/image';
+import { UserData } from '../../types';
 
 type UserInfoProps = {
   data: UserData;

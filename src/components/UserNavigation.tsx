@@ -1,8 +1,8 @@
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
+import close from '../assets/icons/close.svg';
 import left from '../assets/icons/left.svg';
 import right from '../assets/icons/right.svg';
-import close from '../assets/icons/close.svg';
 
 type UserNavigationProps = {
   id: number;
