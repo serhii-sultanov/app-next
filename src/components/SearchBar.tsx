@@ -1,10 +1,11 @@
 import { getUserByName } from '@/api';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { UserData } from '../../types';
 import rightarrow from '../assets/icons/rightarrow.svg';
 import search from '../assets/icons/search.svg';
+import { useCallback } from 'react';
 
 type SearchBarProps = {
   allUsers: UserData[];
@@ -15,21 +16,26 @@ export const SearchBar = ({ allUsers }: SearchBarProps) => {
 
   const router = useRouter();
 
-  const filteredUsers = value
-    ? allUsers.filter((user) => {
-        return user.firstName.toLowerCase().includes(value.toLowerCase());
-      })
-    : [];
+  const filteredUsers = useMemo(() => {
+    return value
+      ? allUsers.filter((user) =>
+          user.firstName.toLowerCase().includes(value.toLowerCase()),
+        )
+      : [];
+  }, [value, allUsers]);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
 
-  const onSearch = async (searchTerm: string) => {
-    const userByName = await getUserByName(searchTerm);
-    router.push(`/user/${userByName.id}`);
-    setValue('');
-  };
+  const onSearch = useCallback(
+    async (searchTerm: string) => {
+      const userByName = await getUserByName(searchTerm);
+      router.push(`/user/${userByName.id}`);
+      setValue('');
+    },
+    [getUserByName],
+  );
 
   return (
     <div className="w-1/2 m-auto relative">
