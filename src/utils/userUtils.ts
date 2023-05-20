@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { UserData, UserResponse } from '../types';
+import { UserData, UserResponse } from '../../types';
 
 const API_USERS_URL = 'https://dummyjson.com/users';
 
@@ -28,7 +28,9 @@ export const getUsersPerPage = async (
   return response.data;
 };
 
-export const getUserByName = async (USER_NAME: string): Promise<UserData> => {
+export const searchUsersByQuery = async (
+  USER_NAME: string,
+): Promise<UserData> => {
   const response = await axios.get(`https://dummyjson.com/users/search`, {
     params: {
       q: USER_NAME,

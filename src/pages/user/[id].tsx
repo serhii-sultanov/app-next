@@ -1,4 +1,4 @@
-import { getAllUsers, getUserById } from '@/api';
+import { getAllUsers, getUserById } from '../../utils/userUtils';
 import { SearchBar } from '@/components/SearchBar';
 import { UserInfo } from '@/components/UserInfo';
 import { UserNavigation } from '@/components/UserNavigation';

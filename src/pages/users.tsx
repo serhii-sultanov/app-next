@@ -1,4 +1,4 @@
-import { getAllUsers, getUsersPerPage } from '@/api';
+import { getAllUsers, getUsersPerPage } from '../utils/userUtils';
 import { PaginationBar } from '@/components/PaginationBar';
 import { SearchBar } from '@/components/SearchBar';
 import { UserCard } from '@/components/UserCard';

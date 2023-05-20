@@ -1,4 +1,4 @@
-import { getUserByName } from '@/api';
+import { searchUsersByQuery } from '../utils/userUtils';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { FC, useCallback, useMemo, useState } from 'react';
@@ -29,11 +29,11 @@ export const SearchBar: FC<SearchBarProps> = ({ allUsers }) => {
 
   const onSearch = useCallback(
     async (searchTerm: string) => {
-      const userByName = await getUserByName(searchTerm);
+      const userByName = await searchUsersByQuery(searchTerm);
       router.push(`/user/${userByName.id}`);
       setValue('');
     },
-    [getUserByName],
+    [searchUsersByQuery],
   );
 
   return (
