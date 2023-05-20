@@ -1,7 +1,7 @@
 import { getUserByName } from '@/api';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useCallback, useMemo, useState } from 'react';
+import { FC, useCallback, useMemo, useState } from 'react';
 import { UserData } from '../../types';
 import rightarrow from '../assets/icons/rightarrow.svg';
 import search from '../assets/icons/search.svg';
@@ -10,7 +10,7 @@ type SearchBarProps = {
   allUsers: UserData[];
 };
 
-export const SearchBar = ({ allUsers }: SearchBarProps) => {
+export const SearchBar: FC<SearchBarProps> = ({ allUsers }) => {
   const [value, setValue] = useState('');
 
   const router = useRouter();

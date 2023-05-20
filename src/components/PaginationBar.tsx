@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { FC } from 'react';
 import left from '../assets/icons/left.svg';
 import right from '../assets/icons/right.svg';
 import { PageLinksList } from './PageLinksList';
@@ -9,10 +10,10 @@ type PaginationBarProps = {
   currentPage: number;
 };
 
-export const PaginationBar = ({
+export const PaginationBar: FC<PaginationBarProps> = ({
   totalPages = 10,
   currentPage,
-}: PaginationBarProps) => {
+}) => {
   const prevPage = currentPage - 1;
   const nextPage = currentPage + 1;
 

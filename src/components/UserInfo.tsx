@@ -1,10 +1,11 @@
 import Image from 'next/image';
+import { FC } from 'react';
 import { UserData } from '../../types';
 
 type UserInfoProps = {
   data: UserData;
 };
-export const UserInfo = ({ data }: UserInfoProps) => {
+export const UserInfo: FC<UserInfoProps> = ({ data }) => {
   const { firstName, lastName, image } = data || {};
   const { address: addressInfo, city, postalCode, state } = data.address || {};
 

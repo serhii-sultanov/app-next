@@ -3,6 +3,7 @@ import { SearchBar } from '@/components/SearchBar';
 import { UserInfo } from '@/components/UserInfo';
 import { UserNavigation } from '@/components/UserNavigation';
 import { GetServerSideProps } from 'next';
+import { FC } from 'react';
 import { UserData } from '../../../types';
 
 type UserDataProps = {
@@ -24,7 +25,7 @@ export const getServerSideProps: GetServerSideProps<UserDataProps> = async ({
   return { props: { allUsers, user } };
 };
 
-const User = ({ allUsers, user }: UserDataProps) => {
+const User: FC<UserDataProps> = ({ allUsers, user }) => {
   return (
     <div className="min-h-screen">
       <div className="p-12 flex items-center">

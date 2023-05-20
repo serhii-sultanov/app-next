@@ -1,12 +1,15 @@
-import { useMemo } from 'react';
 import Link from 'next/link';
+import { FC, useMemo } from 'react';
 
 type PageLinksProps = {
   totalPages: number;
   currentPage: number;
 };
 
-export const PageLinksList = ({ totalPages, currentPage }: PageLinksProps) => {
+export const PageLinksList: FC<PageLinksProps> = ({
+  totalPages,
+  currentPage,
+}) => {
   const pageLinks = useMemo(() => {
     const links = Array(totalPages)
       .fill(null)

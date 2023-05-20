@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { FC } from 'react';
 
 type UserCardProps = {
   image: string;
@@ -6,7 +7,7 @@ type UserCardProps = {
   lastName: string;
 };
 
-export const UserCard = ({ image, firstName, lastName }: UserCardProps) => {
+export const UserCard: FC<UserCardProps> = ({ image, firstName, lastName }) => {
   return (
     <div className="bg-white flex m-auto flex-col justify-center items-center rounded-full overflow-hidden shadow-md w-80 h-80 hover:shadow-black hover:shadow-lg">
       <div className="w-1/2">

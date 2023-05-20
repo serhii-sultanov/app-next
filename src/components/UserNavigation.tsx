@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { FC } from 'react';
 import close from '../assets/icons/close.svg';
 import left from '../assets/icons/left.svg';
 import right from '../assets/icons/right.svg';
@@ -8,7 +9,7 @@ type UserNavigationProps = {
   id: number;
 };
 
-export const UserNavigation = ({ id }: UserNavigationProps) => {
+export const UserNavigation: FC<UserNavigationProps> = ({ id }) => {
   return (
     <div className="flex items-center justify-between w-40">
       <Link href="/users?page=1" className="w-1/3">
