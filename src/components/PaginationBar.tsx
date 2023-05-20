@@ -1,68 +1,20 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { useMemo } from 'react';
 import left from '../assets/icons/left.svg';
 import right from '../assets/icons/right.svg';
+import { PageLinksList } from './PageLinksList';
 
 type PaginationBarProps = {
-  totalUsers: number;
+  totalPages: number;
   currentPage: number;
 };
 
-const PAGE_LIMIT = 10;
-
 export const PaginationBar = ({
-  totalUsers,
+  totalPages = 10,
   currentPage,
 }: PaginationBarProps) => {
-  const totalPages = useMemo(
-    () => Math.ceil(totalUsers / PAGE_LIMIT),
-    [totalUsers],
-  );
-
   const prevPage = currentPage - 1;
   const nextPage = currentPage + 1;
-
-  const pageLinks = useMemo(() => {
-    const links = [];
-
-    for (let i = 1; i <= totalPages; i++) {
-      let link;
-      const shownLink = (
-        <Link
-          key={i}
-          href={`/users?page=${i}`}
-          className={`p-2 mx-1 text-lg rounded-full hover:bg-neutral-600 ${
-            i === currentPage && 'bg-black text-white'
-          }`}
-        >
-          {i}
-        </Link>
-      );
-      const unshownLink = (
-        <Link key={i} href={`/users?page=${i}`} className="p-2 mx-1 text-lg">
-          .
-        </Link>
-      );
-
-      switch (true) {
-        case i === 1:
-        case i === totalPages:
-        case i === currentPage:
-        case i >= currentPage - 1 && i <= currentPage + 1:
-          link = shownLink;
-          break;
-
-        default:
-          link = unshownLink;
-          break;
-      }
-
-      links.push(link);
-    }
-
-    return links;
-  }, [totalPages, currentPage]);
 
   return (
     <div className="flex justify-center items-center space-x-2">
@@ -76,9 +28,9 @@ export const PaginationBar = ({
           />
         </Link>
       ) : null}
-      <ul className="mx-4">
-        <li>{pageLinks}</li>
-      </ul>
+
+      <PageLinksList totalPages={totalPages} currentPage={currentPage} />
+
       {currentPage < totalPages ? (
         <Link href={`/users?page=${nextPage}`} className="w-12">
           <Image

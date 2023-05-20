@@ -10,7 +10,9 @@ type UserDataProps = {
   allUsers: UserData[];
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps<UserDataProps> = async ({
+  params,
+}) => {
   const allUsers = await getAllUsers();
   const { id } = params || {};
   if (!id) {

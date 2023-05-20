@@ -9,21 +9,21 @@ import { UserData } from '../../types';
 
 type UserProps = {
   users: UserData[];
-  total: number;
   currentPage: number;
   allUsers: UserData[];
 };
 
 const PAGE_LIMIT = 10;
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+export const getServerSideProps: GetServerSideProps<UserProps> = async ({
+  query,
+}) => {
   const currentPage = Number(query.page) || 1;
   const skip = (currentPage - 1) * PAGE_LIMIT;
   try {
     const allUsers = await getAllUsers();
     const response = await getUsersPerPage(PAGE_LIMIT, skip);
-    const { total } = response;
-    return { props: { allUsers, users: response.users, currentPage, total } };
+    return { props: { allUsers, users: response.users, currentPage } };
   } catch (error) {
     return {
       notFound: true,
@@ -31,7 +31,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   }
 };
 
-const Users: FC<UserProps> = ({ allUsers, users, total, currentPage }) => {
+const Users: FC<UserProps> = ({ allUsers, users, currentPage }) => {
   return (
     <div className="min-h-screen p-12">
       <SearchBar allUsers={allUsers} />
@@ -46,7 +46,7 @@ const Users: FC<UserProps> = ({ allUsers, users, total, currentPage }) => {
           </Link>
         ))}
       </div>
-      <PaginationBar totalUsers={total} currentPage={currentPage} />
+      <PaginationBar totalPages={10} currentPage={currentPage} />
     </div>
   );
 };
