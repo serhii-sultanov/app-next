@@ -1,40 +1,37 @@
-import { searchUsersByQuery } from '../utils/userUtils';
+import { searchUsersByQuery } from '@/utils/userUtils';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
-import { FC, useCallback, useMemo, useState } from 'react';
+import Link from 'next/link';
+import { useCallback, useMemo, useState } from 'react';
 import { UserData } from '../../types';
 import rightarrow from '../assets/icons/rightarrow.svg';
 import search from '../assets/icons/search.svg';
 
-type SearchBarProps = {
-  allUsers: UserData[];
-};
-
-export const SearchBar: FC<SearchBarProps> = ({ allUsers }) => {
+export const SearchBar = () => {
   const [value, setValue] = useState('');
-
-  const router = useRouter();
+  const [users, setUsers] = useState<UserData[]>([]);
 
   const filteredUsers = useMemo(() => {
     return value
-      ? allUsers.filter((user) =>
+      ? users.filter((user) =>
           user.firstName.toLowerCase().includes(value.toLowerCase()),
         )
       : [];
-  }, [value, allUsers]);
+  }, [value, users]);
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
-  };
-
-  const onSearch = useCallback(
-    async (searchTerm: string) => {
-      const userByName = await searchUsersByQuery(searchTerm);
-      router.push(`/user/${userByName.id}`);
-      setValue('');
+  const handleSearch = useCallback(
+    async (event: React.ChangeEvent<HTMLInputElement>) => {
+      event.preventDefault();
+      const searchValue = event.target.value;
+      setValue(searchValue);
+      const usersByQuery = await searchUsersByQuery(searchValue);
+      setUsers(usersByQuery);
     },
-    [searchUsersByQuery],
+    [],
   );
+
+  const handleClick = useCallback(() => {
+    setValue('');
+  }, []);
 
   return (
     <div className="w-1/2 m-auto relative">
@@ -56,13 +53,25 @@ export const SearchBar: FC<SearchBarProps> = ({ allUsers }) => {
       </div>
       {filteredUsers ? (
         <div className="absolute top-14 left-0 w-full border border-gray-300 bg-white z-10">
-          {filteredUsers.map((user) => (
-            <button
+          {filteredUsers.map((user: UserData) => (
+            <Link
+              onClick={handleClick}
               key={user.id}
-              onClick={() => onSearch(user.firstName)}
+              href={`/user/${user.id}`}
               className="w-full flex items-center justify-between px-4 py-2 hover:bg-gray-100 cursor-pointer"
             >
-              {user.firstName} {user.lastName}
+              <div className="flex items-center">
+                <Image
+                  src={user.image}
+                  alt="Photo"
+                  width={20}
+                  height={20}
+                  className="w-fit mr-2 rounded-full bg-slate-700"
+                />
+                <span className="font-medium">
+                  {user.firstName} {user.lastName}
+                </span>
+              </div>
               <Image
                 src={rightarrow}
                 alt="to User"
@@ -70,7 +79,7 @@ export const SearchBar: FC<SearchBarProps> = ({ allUsers }) => {
                 height={50}
                 className="w-6"
               />
-            </button>
+            </Link>
           ))}
         </div>
       ) : null}

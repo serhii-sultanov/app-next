@@ -3,12 +3,6 @@ import { UserData, UserResponse } from '../../types';
 
 const API_USERS_URL = 'https://dummyjson.com/users';
 
-export const getAllUsers = async (): Promise<UserData[]> => {
-  const response = await axios.get<UserResponse>(`${API_USERS_URL}`);
-  const allUsers = response.data.users;
-  return allUsers;
-};
-
 export const getUserById = async (USER_ID: number): Promise<UserData> => {
   const response = await axios.get<UserData>(`${API_USERS_URL}/${USER_ID}`);
   const user: UserData = response.data;
@@ -30,12 +24,11 @@ export const getUsersPerPage = async (
 
 export const searchUsersByQuery = async (
   USER_NAME: string,
-): Promise<UserData> => {
+): Promise<UserData[]> => {
   const response = await axios.get(`https://dummyjson.com/users/search`, {
     params: {
       q: USER_NAME,
     },
   });
-  const [user] = response.data.users;
-  return user;
+  return response.data.users;
 };

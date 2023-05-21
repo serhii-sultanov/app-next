@@ -1,4 +1,4 @@
-import { getAllUsers, getUserById } from '../../utils/userUtils';
+import { getUserById } from '../../utils/userUtils';
 import { SearchBar } from '@/components/SearchBar';
 import { UserInfo } from '@/components/UserInfo';
 import { UserNavigation } from '@/components/UserNavigation';
@@ -8,13 +8,11 @@ import { UserData } from '../../../types';
 
 type UserDataProps = {
   user: UserData;
-  allUsers: UserData[];
 };
 
 export const getServerSideProps: GetServerSideProps<UserDataProps> = async ({
   params,
 }) => {
-  const allUsers = await getAllUsers();
   const { id } = params || {};
   if (!id) {
     return {
@@ -22,15 +20,15 @@ export const getServerSideProps: GetServerSideProps<UserDataProps> = async ({
     };
   }
   const user = await getUserById(+id);
-  return { props: { allUsers, user } };
+  return { props: { user } };
 };
 
-const User: FC<UserDataProps> = ({ allUsers, user }) => {
+const User: FC<UserDataProps> = ({ user }) => {
   return (
     <div className="min-h-screen">
       <div className="p-12 flex items-center">
         <UserNavigation id={user.id} />
-        <SearchBar allUsers={allUsers} />
+        <SearchBar />
       </div>
       <UserInfo data={user} />
     </div>
