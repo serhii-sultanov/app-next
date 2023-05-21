@@ -1,6 +1,8 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { FC } from 'react';
 import { UserData } from '../../types';
+import close from '../assets/icons/close.svg';
 
 type UserInfoProps = {
   data: UserData;
@@ -8,6 +10,16 @@ type UserInfoProps = {
 export const UserInfo: FC<UserInfoProps> = ({ data }) => {
   return (
     <div className="bg-white flex m-auto justify-center items-center rounded-full overflow-hidden shadow-md w-1/2">
+      <div className="w-12 absolute top-44 right-1/4">
+        <Link href="/users?page=1">
+          <Image
+            className="w-full hover:transform hover:scale-110 transition-all duration-300"
+            priority
+            src={close}
+            alt="Back to Users List"
+          />
+        </Link>
+      </div>
       <div className="w-1/2">
         <Image
           src={data.image}
