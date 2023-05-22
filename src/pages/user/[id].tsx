@@ -1,7 +1,6 @@
 import { getUserById } from '../../utils/userUtils';
 import { SearchBar } from '@/components/SearchBar';
 import { UserInfo } from '@/components/UserInfo';
-// import { BackToUsersListLink } from '@/components/BackToUsersListLink';
 import { GetServerSideProps } from 'next';
 import { FC } from 'react';
 import { UserData } from '../../../types';
@@ -29,7 +28,6 @@ const User: FC<UserDataProps> = ({ user }) => {
       <div className="p-12 flex items-center">
         <SearchBar />
       </div>
-      {/* <BackToUsersListLink /> */}
       <UserInfo data={user} />
     </div>
   );
