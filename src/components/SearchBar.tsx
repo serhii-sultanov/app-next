@@ -7,22 +7,22 @@ import rightarrow from '../assets/icons/rightarrow.svg';
 import search from '../assets/icons/search.svg';
 
 export const SearchBar = () => {
-  const [value, setValue] = useState('');
+  const [query, setQuery] = useState('');
   const [users, setUsers] = useState<UserData[]>([]);
 
   const filteredUsers = useMemo(() => {
-    return value
+    return query
       ? users.filter((user) =>
-          user.firstName.toLowerCase().includes(value.toLowerCase()),
+          user.firstName.toLowerCase().includes(query.toLowerCase()),
         )
       : [];
-  }, [value, users]);
+  }, [query, users]);
 
   const handleSearch = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>) => {
       event.preventDefault();
       const searchValue = event.target.value;
-      setValue(searchValue);
+      setQuery(searchValue);
       const usersByQuery = await searchUsersByQuery(searchValue);
       setUsers(usersByQuery);
     },
@@ -30,7 +30,7 @@ export const SearchBar = () => {
   );
 
   const handleClick = useCallback(() => {
-    setValue('');
+    setQuery('');
   }, []);
 
   return (
@@ -45,7 +45,7 @@ export const SearchBar = () => {
         />
         <input
           type="text"
-          value={value}
+          value={query}
           onChange={handleSearch}
           placeholder="search users"
           className="border border-gray-300 p-4 rounded-lg pl-16 w-full outline-none focus:ring-2 focus:ring-stone-700"
@@ -53,7 +53,7 @@ export const SearchBar = () => {
       </div>
       {filteredUsers ? (
         <div className="absolute top-14 left-0 w-full border border-gray-300 bg-white z-10">
-          {filteredUsers.map((user: UserData) => (
+          {filteredUsers.map((user) => (
             <Link
               onClick={handleClick}
               key={user.id}
@@ -86,3 +86,4 @@ export const SearchBar = () => {
     </div>
   );
 };
+
