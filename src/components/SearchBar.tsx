@@ -1,7 +1,7 @@
 import { searchUsersByQuery } from '@/utils/userUtils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { UserData } from '../../types';
 import rightarrow from '../assets/icons/rightarrow.svg';
 import search from '../assets/icons/search.svg';
@@ -9,14 +9,6 @@ import search from '../assets/icons/search.svg';
 export const SearchBar = () => {
   const [query, setQuery] = useState('');
   const [users, setUsers] = useState<UserData[]>([]);
-
-  const filteredUsers = useMemo(() => {
-    return query
-      ? users.filter((user) =>
-          user.firstName.toLowerCase().includes(query.toLowerCase()),
-        )
-      : [];
-  }, [query, users]);
 
   const handleSearch = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,9 +43,9 @@ export const SearchBar = () => {
           className="border border-gray-300 p-4 rounded-lg pl-16 w-full outline-none focus:ring-2 focus:ring-stone-700"
         />
       </div>
-      {filteredUsers ? (
+      {users ? (
         <div className="absolute top-14 left-0 w-full border border-gray-300 bg-white z-10">
-          {filteredUsers.map((user) => (
+          {users.map((user) => (
             <Link
               onClick={handleClick}
               key={user.id}
@@ -86,4 +78,3 @@ export const SearchBar = () => {
     </div>
   );
 };
-

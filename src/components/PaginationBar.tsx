@@ -1,21 +1,17 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { FC } from 'react';
+import { PaginationProps } from '../../types';
 import left from '../assets/icons/left.svg';
 import right from '../assets/icons/right.svg';
-import { PageLinksList } from './PageLinksList';
+import { PageLinks } from './PageLinks';
 
-type PaginationBarProps = {
-  totalPages: number;
-  currentPage: number;
-};
-
-export const PaginationBar: FC<PaginationBarProps> = ({
-  totalPages = 10,
+export const PaginationBar: FC<PaginationProps> = ({
+  totalPages,
   currentPage,
 }) => {
-  const prevPage = currentPage - 1;
-  const nextPage = currentPage + 1;
+  const prevPage = currentPage > 1 ? currentPage - 1 : 1;
+  const nextPage = currentPage < totalPages ? currentPage + 1 : totalPages;
 
   return (
     <div className="flex justify-center items-center space-x-2">
@@ -30,7 +26,7 @@ export const PaginationBar: FC<PaginationBarProps> = ({
         </Link>
       ) : null}
 
-      <PageLinksList totalPages={totalPages} currentPage={currentPage} />
+      <PageLinks totalPages={totalPages} currentPage={currentPage} />
 
       {currentPage < totalPages ? (
         <Link href={`/users?page=${nextPage}`} className="w-12">
