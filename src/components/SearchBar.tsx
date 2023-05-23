@@ -3,7 +3,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useState } from 'react';
 import { UserData } from '../../types';
-import rightarrow from '../assets/icons/rightarrow.svg';
 import search from '../assets/icons/search.svg';
 
 export const SearchBar = () => {
@@ -50,7 +49,7 @@ export const SearchBar = () => {
               onClick={handleClick}
               key={user.id}
               href={`/user/${user.id}`}
-              className="w-full flex items-center justify-between px-4 py-2 hover:bg-gray-100 cursor-pointer"
+              className="w-full flex items-center justify-between px-4 py-2 hover:bg-gray-100"
             >
               <div className="flex items-center">
                 <Image
