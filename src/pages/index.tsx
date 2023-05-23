@@ -12,8 +12,7 @@ export default function Home() {
         href="/users?page=1"
         className="p-16 bg-stone-800 text-slate-100 rounded-full hover:text-stone-800 hover:bg-slate-100 duration-1000"
       >
-        {' '}
-        Users Page{' '}
+        Users Page
       </Link>
     </main>
   );

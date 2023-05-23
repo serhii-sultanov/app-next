@@ -1,12 +1,16 @@
 import Link from 'next/link';
 import { FC } from 'react';
-import { PaginationProps } from '../../types';
-import { usePagination } from '../hooks/usePagination';
+import { getPagination } from '../utils/paginationUtils';
+
+type PageLinksProps = {
+  totalPages: number;
+  currentPage: number;
+};
 
 export const dotts = '...';
 
-export const PageLinks: FC<PaginationProps> = ({ totalPages, currentPage }) => {
-  const pages = usePagination(totalPages, currentPage);
+export const PageLinks: FC<PageLinksProps> = ({ totalPages, currentPage }) => {
+  const pages = getPagination(totalPages, currentPage);
 
   return (
     <div className="flex items-center justify-center my-8">

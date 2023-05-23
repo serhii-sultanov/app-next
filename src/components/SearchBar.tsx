@@ -64,13 +64,7 @@ export const SearchBar = () => {
                   {user.firstName} {user.lastName}
                 </span>
               </div>
-              <Image
-                src={rightarrow}
-                alt="to User"
-                width={50}
-                height={50}
-                className="w-6"
-              />
+              <span className=" text-lg font-bold">&gt;</span>
             </Link>
           ))}
         </div>

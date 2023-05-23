@@ -17,8 +17,3 @@ export type UserResponse = {
   users: UserData[];
   total?: number;
 };
-
-export type PaginationProps = {
-  totalPages: number;
-  currentPage: number;
-};
