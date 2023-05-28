@@ -1,24 +1,55 @@
+import { useDebounceValue } from '@/hooks/useDebounceValue';
 import { searchUsersByQuery } from '@/utils/userUtils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { UserData } from '../../types';
 import search from '../assets/icons/search.svg';
 
 export const SearchBar = () => {
   const [query, setQuery] = useState('');
   const [users, setUsers] = useState<UserData[]>([]);
+  const [cache, setCache] = useState<{ [query: string]: UserData[] }>({});
+
+  const debouncedQuery = useDebounceValue(query, 500);
 
   const handleSearch = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>) => {
       event.preventDefault();
       const searchValue = event.target.value;
       setQuery(searchValue);
-      const usersByQuery = await searchUsersByQuery(searchValue);
-      setUsers(usersByQuery);
     },
     [],
   );
+
+  useEffect(() => {
+    let isCurrentQuery = true;
+
+    const fetchUsers = async () => {
+      if (cache[debouncedQuery]) {
+        setUsers(cache[debouncedQuery]);
+      } else {
+        const usersByQuery = await searchUsersByQuery(debouncedQuery);
+        setCache((prevCache) => ({
+          ...prevCache,
+          [debouncedQuery]: usersByQuery,
+        }));
+        if (isCurrentQuery) {
+          setUsers(usersByQuery);
+        }
+      }
+    };
+
+    if (debouncedQuery.trim() !== '') {
+      fetchUsers();
+    } else {
+      setUsers([]);
+    }
+
+    return () => {
+      isCurrentQuery = false;
+    };
+  }, [debouncedQuery]);
 
   const handleClick = useCallback(() => {
     setQuery('');
