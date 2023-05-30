@@ -13,6 +13,8 @@ export const SearchBar = () => {
 
   const debouncedQuery = useDebounceValue(query, 500);
 
+  let canceled = false;
+
   const handleSearch = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>) => {
       event.preventDefault();
@@ -22,34 +24,35 @@ export const SearchBar = () => {
     [],
   );
 
-  useEffect(() => {
-    let isCurrentQuery = true;
-
-    const fetchUsers = async () => {
-      if (cache[debouncedQuery]) {
-        setUsers(cache[debouncedQuery]);
-      } else {
+  const fetchUsers = useCallback(async () => {
+    if (cache[debouncedQuery]) {
+      setUsers(cache[debouncedQuery]);
+    } else {
+      try {
         const usersByQuery = await searchUsersByQuery(debouncedQuery);
-        setCache((prevCache) => ({
-          ...prevCache,
-          [debouncedQuery]: usersByQuery,
-        }));
-        if (isCurrentQuery) {
+        if (!canceled) {
+          setCache((prevCache) => ({
+            ...prevCache,
+            [debouncedQuery]: usersByQuery,
+          }));
           setUsers(usersByQuery);
         }
+      } catch (error) {
+        console.error('Error:', error);
       }
-    };
+    }
+  }, [cache, debouncedQuery]);
 
+  useEffect(() => {
     if (debouncedQuery.trim() !== '') {
       fetchUsers();
     } else {
       setUsers([]);
     }
-
     return () => {
-      isCurrentQuery = false;
+      canceled = true;
     };
-  }, [debouncedQuery]);
+  }, [debouncedQuery, fetchUsers]);
 
   const handleClick = useCallback(() => {
     setQuery('');
