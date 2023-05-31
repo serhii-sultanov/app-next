@@ -2,7 +2,7 @@ import { useDebounceValue } from '@/hooks/useDebounceValue';
 import { searchUsersByQuery } from '@/utils/userUtils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { UserData } from '../../types';
 import search from '../assets/icons/search.svg';
 
@@ -13,11 +13,10 @@ export const SearchBar = () => {
 
   const debouncedQuery = useDebounceValue(query, 500);
 
-  let canceled = false;
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const handleSearch = useCallback(
-    async (event: React.ChangeEvent<HTMLInputElement>) => {
-      event.preventDefault();
+    (event: React.ChangeEvent<HTMLInputElement>) => {
       const searchValue = event.target.value;
       setQuery(searchValue);
     },
@@ -25,34 +24,43 @@ export const SearchBar = () => {
   );
 
   const fetchUsers = useCallback(async () => {
-    if (cache[debouncedQuery]) {
-      setUsers(cache[debouncedQuery]);
-    } else {
-      try {
-        const usersByQuery = await searchUsersByQuery(debouncedQuery);
-        if (!canceled) {
-          setCache((prevCache) => ({
-            ...prevCache,
-            [debouncedQuery]: usersByQuery,
-          }));
-          setUsers(usersByQuery);
-        }
-      } catch (error) {
-        console.error('Error:', error);
-      }
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
     }
-  }, [cache, debouncedQuery]);
+
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+
+    try {
+      const usersByQuery = await searchUsersByQuery(
+        debouncedQuery,
+        controller.signal,
+      );
+      if (!controller.signal.aborted) {
+        setCache((prevCache) => ({
+          ...prevCache,
+          [debouncedQuery]: usersByQuery,
+        }));
+        setUsers(usersByQuery);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      abortControllerRef.current = null;
+    }
+  }, [debouncedQuery]);
 
   useEffect(() => {
     if (debouncedQuery.trim() !== '') {
-      fetchUsers();
+      if (cache[debouncedQuery]) {
+        setUsers(cache[debouncedQuery]);
+      } else {
+        fetchUsers();
+      }
     } else {
       setUsers([]);
     }
-    return () => {
-      canceled = true;
-    };
-  }, [debouncedQuery, fetchUsers]);
+  }, [debouncedQuery, cache, fetchUsers]);
 
   const handleClick = useCallback(() => {
     setQuery('');

@@ -24,11 +24,18 @@ export const getUsersPerPage = async (
 
 export const searchUsersByQuery = async (
   USER_NAME: string,
+  signal: AbortSignal,
 ): Promise<UserData[]> => {
-  const response = await axios.get(`https://dummyjson.com/users/search`, {
-    params: {
-      q: USER_NAME,
-    },
-  });
-  return response.data.users;
+  try {
+    const response = await axios.get(`https://dummyjson.com/users/search`, {
+      params: {
+        q: USER_NAME,
+      },
+      signal,
+    });
+    return response.data.users;
+  } catch (error) {
+    console.error('Error:', error);
+    return [];
+  }
 };
