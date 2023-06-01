@@ -81,7 +81,7 @@ export const SearchBar = () => {
           value={query}
           onChange={handleSearch}
           placeholder="search users"
-          className="border border-gray-300 p-4 rounded-lg pl-16 w-full outline-none focus:ring-2 focus:ring-stone-700"
+          className="border border-gray-300 p-4 text-base text-slate-700 rounded-lg pl-16 w-full outline-none focus:ring-2 focus:ring-stone-700"
         />
       </div>
       {users ? (
@@ -101,11 +101,11 @@ export const SearchBar = () => {
                   height={20}
                   className="w-fit mr-2 rounded-full bg-slate-700"
                 />
-                <span className="font-medium">
+                <span className="font-medium text-slate-900 text-base">
                   {user.firstName} {user.lastName}
                 </span>
               </div>
-              <span className=" text-lg font-bold">&gt;</span>
+              <span className=" text-lg font-bold text-slate-900">&gt;</span>
             </Link>
           ))}
         </div>
