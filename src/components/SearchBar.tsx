@@ -1,24 +1,66 @@
+import { useDebounceValue } from '@/hooks/useDebounceValue';
 import { searchUsersByQuery } from '@/utils/userUtils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { UserData } from '../../types';
 import search from '../assets/icons/search.svg';
 
 export const SearchBar = () => {
   const [query, setQuery] = useState('');
   const [users, setUsers] = useState<UserData[]>([]);
+  const [cache, setCache] = useState<{ [query: string]: UserData[] }>({});
+
+  const debouncedQuery = useDebounceValue(query, 500);
+
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const handleSearch = useCallback(
-    async (event: React.ChangeEvent<HTMLInputElement>) => {
-      event.preventDefault();
+    (event: React.ChangeEvent<HTMLInputElement>) => {
       const searchValue = event.target.value;
       setQuery(searchValue);
-      const usersByQuery = await searchUsersByQuery(searchValue);
-      setUsers(usersByQuery);
     },
     [],
   );
+
+  const fetchUsers = useCallback(async () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
+
+    try {
+      const usersByQuery = await searchUsersByQuery(
+        debouncedQuery,
+        controller.signal,
+      );
+      if (!controller.signal.aborted) {
+        setCache((prevCache) => ({
+          ...prevCache,
+          [debouncedQuery]: usersByQuery,
+        }));
+        setUsers(usersByQuery);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      abortControllerRef.current = null;
+    }
+  }, [debouncedQuery]);
+
+  useEffect(() => {
+    if (debouncedQuery.trim() !== '') {
+      if (cache[debouncedQuery]) {
+        setUsers(cache[debouncedQuery]);
+      } else {
+        fetchUsers();
+      }
+    } else {
+      setUsers([]);
+    }
+  }, [debouncedQuery, cache, fetchUsers]);
 
   const handleClick = useCallback(() => {
     setQuery('');
@@ -39,7 +81,7 @@ export const SearchBar = () => {
           value={query}
           onChange={handleSearch}
           placeholder="search users"
-          className="border border-gray-300 p-4 rounded-lg pl-16 w-full outline-none focus:ring-2 focus:ring-stone-700"
+          className="border border-gray-300 p-4 text-base text-slate-700 rounded-lg pl-16 w-full outline-none focus:ring-2 focus:ring-stone-700"
         />
       </div>
       {users ? (
@@ -59,11 +101,11 @@ export const SearchBar = () => {
                   height={20}
                   className="w-fit mr-2 rounded-full bg-slate-700"
                 />
-                <span className="font-medium">
+                <span className="font-medium text-slate-900 text-base">
                   {user.firstName} {user.lastName}
                 </span>
               </div>
-              <span className=" text-lg font-bold">&gt;</span>
+              <span className=" text-lg font-bold text-slate-900">&gt;</span>
             </Link>
           ))}
         </div>
