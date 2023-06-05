@@ -41,6 +41,12 @@ const Users: FC<UserProps> = ({ users, currentPage }) => {
   return (
     <div className="min-h-screen p-12">
       <SearchBar />
+      <Link
+        href="/table"
+        className="absolute right-32 top-10 p-4 underline rounded-full text-stone-800 hover:bg-slate-100 duration-1000"
+      >
+        Users Table
+      </Link>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-x-4 gap-y-8 p-12">
         {users.map((user) => (
           <Link key={user.id} href={`user/${user.id}`} className="rounded-full">

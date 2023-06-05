@@ -3,6 +3,17 @@ import { UserData, UserResponse } from '../../types';
 
 const API_USERS_URL = 'https://dummyjson.com/users';
 
+export const getAllUsers = async (): Promise<UserData[]> => {
+  try {
+    const response = await axios.get(`${API_USERS_URL}?limit=100`);
+    const users: UserData[] = response.data.users;
+    return users;
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    return [];
+  }
+};
+
 export const getUserById = async (USER_ID: number): Promise<UserData> => {
   const response = await axios.get<UserData>(`${API_USERS_URL}/${USER_ID}`);
   const user: UserData = response.data;

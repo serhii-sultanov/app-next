@@ -11,6 +11,9 @@ export type UserData = {
   lastName: string;
   image: string;
   address?: AddressData;
+  age: number;
+  weight: number;
+  height: number;
 };
 
 export type UserResponse = {
